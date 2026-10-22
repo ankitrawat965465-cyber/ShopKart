@@ -1,0 +1,460 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopKart | Online Shopping</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #e9edf2;
+            color: #202b3c;
+        }
+
+        .topbar {
+            background: #131c2e;
+            color: white;
+            padding: 18px 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ffad42;
+        }
+
+        .logo span { color: white; }
+
+        .search {
+            flex: 1;
+            max-width: 520px;
+            display: flex;
+        }
+
+        .search input {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px 0 0 6px;
+            font-size: 15px;
+        }
+
+        .search button {
+            border: none;
+            padding: 12px 18px;
+            background: #ffad42;
+            cursor: pointer;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .cart { font-weight: bold; font-size: 16px; }
+
+        .nav {
+            background: #26364d;
+            padding: 12px 5%;
+            color: white;
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .nav a { color: white; text-decoration: none; }
+
+        .hero {
+            margin: 24px auto;
+            width: 92%;
+            padding: 38px;
+            border-radius: 14px;
+            color: white;
+            background: linear-gradient(120deg, #172b4d, #087f8c);
+        }
+
+        .hero h1 { font-size: 34px; margin: 0 0 12px; }
+        .hero p { font-size: 17px; }
+
+        .hero a {
+            display: inline-block;
+            margin-top: 10px;
+            background: #ffad42;
+            color: #172033;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .section { width: 92%; margin: 28px auto; }
+        .section h2 { margin-bottom: 20px; }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 22px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: 0 4px 14px rgba(20, 35, 55, 0.08);
+            transition: transform 0.2s;
+        }
+
+        .card:hover { transform: translateY(-5px); }
+
+        .card img {
+            width: 100%;
+            height: 210px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .card h3 { min-height: 40px; }
+
+        .price {
+            color: #087f55;
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+        .details {
+            display: block;
+            text-align: center;
+            background: #ffad42;
+            color: #172033;
+            padding: 12px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .details:hover { background: #f69a20; }
+
+        footer {
+            margin-top: 40px;
+            padding: 25px;
+            background: #131c2e;
+            color: white;
+            text-align: center;
+        }
+
+        /* Floating AI chat button */
+        #chat-toggle {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            z-index: 1001;
+            background: #087f8c;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 16px 21px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px #0003;
+        }
+
+        #chat-widget {
+            display: none;
+            position: fixed;
+            right: 24px;
+            bottom: 88px;
+            z-index: 1000;
+            width: min(360px, calc(100vw - 32px));
+            height: 460px;
+            max-height: calc(100vh - 120px);
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 5px 25px #0003;
+            overflow: hidden;
+            flex-direction: column;
+        }
+
+        #chat-widget.open { display: flex; }
+
+        .chat-header {
+            background: #131c2e;
+            color: white;
+            padding: 16px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #chat-close {
+            border: none;
+            background: transparent;
+            color: white;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        #chat-messages {
+            flex: 1;
+            padding: 14px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .chat-message {
+            max-width: 88%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            line-height: 1.4;
+            font-size: 14px;
+        }
+
+        .bot-message {
+            align-self: flex-start;
+            background: #e9edf2;
+            color: #202b3c;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background: #087f8c;
+            color: white;
+        }
+
+        .chat-form {
+            display: flex;
+            padding: 12px;
+            border-top: 1px solid #ddd;
+            gap: 8px;
+        }
+
+        #chat-input {
+            flex: 1;
+            min-width: 0;
+            padding: 11px;
+            border: 1px solid #ccd2da;
+            border-radius: 7px;
+            font-size: 14px;
+        }
+
+        #chat-send {
+            padding: 10px 14px;
+            border: none;
+            border-radius: 7px;
+            background: #ffad42;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #chat-send:disabled { opacity: 0.6; cursor: wait; }
+
+        @media (max-width: 600px) {
+            .hero { padding: 25px; }
+            .hero h1 { font-size: 27px; }
+            #chat-widget { right: 16px; bottom: 82px; }
+            #chat-toggle { right: 16px; bottom: 16px; }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="topbar">
+        <div class="logo">Shop<span>Kart</span></div>
+
+        <form class="search" id="searchForm">
+            <input
+                type="search"
+                id="searchInput"
+                placeholder="Search headphones, watches, shoes..."
+                aria-label="Search products">
+            <button type="submit">🔍</button>
+        </form>
+
+        <div class="cart">🛒 ShopKart Store</div>
+    </header>
+
+    <nav class="nav">
+        <a href="/">Home</a>
+        <a href="#products">All Products</a>
+        <a href="#products">Today's Deals</a>
+    </nav>
+
+    <section class="hero">
+        <h1>Upgrade Your Everyday Life</h1>
+        <p>Discover gadgets, fashion and everyday essentials at great prices.</p>
+        <a href="#products">Explore Products ↓</a>
+    </section>
+
+    <main class="section" id="products">
+        <h2>🔥 Popular Products</h2>
+
+        <div class="products" id="productGrid">
+            {% for product in products %}
+            <article class="card">
+                <img
+                    src="{{ product.image }}"
+                    alt="{{ product.name }}"
+                    loading="lazy">
+
+                <h3>{{ product.name }}</h3>
+                <p class="price">₹{{ product.price }}</p>
+
+                <a class="details" href="/product/{{ product.id }}">
+                    View Details
+                </a>
+            </article>
+            {% endfor %}
+        </div>
+
+        <p id="noResults" hidden>No matching products found.</p>
+    </main>
+
+    <footer>
+        <p>© 2026 ShopKart | Your Everyday Shopping Store</p>
+    </footer>
+
+    <!-- AI chatbot window -->
+    <section id="chat-widget" aria-label="ShopKart AI assistant">
+        <div class="chat-header">
+            <span>🤖 ShopKart AI Assistant</span>
+            <button id="chat-close" type="button" aria-label="Close chat">×</button>
+        </div>
+
+        <div id="chat-messages" aria-live="polite">
+            <div class="chat-message bot-message">
+                Hi! 👋 Main ShopKart AI hoon. Products aur prices ke baare mein poochho!
+            </div>
+        </div>
+
+        <form class="chat-form" id="chat-form">
+            <input
+                id="chat-input"
+                type="text"
+                placeholder="Ask about products..."
+                autocomplete="off"
+                maxlength="1000"
+                required>
+            <button id="chat-send" type="submit">Send</button>
+        </form>
+    </section>
+
+    <button id="chat-toggle" type="button" aria-expanded="false">
+        💬 Ask ShopKart AI
+    </button>
+
+    <script>
+        // Product search
+        const searchForm = document.getElementById("searchForm");
+        const searchInput = document.getElementById("searchInput");
+        const cards = document.querySelectorAll(".card");
+        const noResults = document.getElementById("noResults");
+
+        searchForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const query = searchInput.value.trim().toLowerCase();
+            let visibleCount = 0;
+
+            cards.forEach(function (card) {
+                const matches = card.textContent.toLowerCase().includes(query);
+                card.hidden = !matches;
+                if (matches) visibleCount++;
+            });
+
+            noResults.hidden = visibleCount !== 0;
+        });
+
+        searchInput.addEventListener("input", function () {
+            if (searchInput.value.trim() === "") {
+                cards.forEach(function (card) {
+                    card.hidden = false;
+                });
+                noResults.hidden = true;
+            }
+        });
+
+        // Chat window controls
+        const chatWidget = document.getElementById("chat-widget");
+        const chatToggle = document.getElementById("chat-toggle");
+        const chatClose = document.getElementById("chat-close");
+        const chatForm = document.getElementById("chat-form");
+        const chatInput = document.getElementById("chat-input");
+        const chatMessages = document.getElementById("chat-messages");
+        const chatSend = document.getElementById("chat-send");
+
+        chatToggle.addEventListener("click", function () {
+            const isOpen = chatWidget.classList.toggle("open");
+            chatToggle.setAttribute("aria-expanded", String(isOpen));
+
+            if (isOpen) chatInput.focus();
+        });
+
+        chatClose.addEventListener("click", function () {
+            chatWidget.classList.remove("open");
+            chatToggle.setAttribute("aria-expanded", "false");
+        });
+
+        function addMessage(text, sender) {
+            const message = document.createElement("div");
+            message.className = "chat-message " + sender;
+            message.textContent = text;
+            chatMessages.appendChild(message);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            return message;
+        }
+
+        // Send user message to the Flask /chat API
+        chatForm.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const message = chatInput.value.trim();
+            if (!message) return;
+
+            addMessage(message, "user-message");
+            chatInput.value = "";
+            chatSend.disabled = true;
+
+            const waitingMessage = addMessage("Thinking...", "bot-message");
+
+            try {
+                const response = await fetch("/chat", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ message: message })
+                });
+
+                const data = await response.json();
+
+                waitingMessage.textContent = data.reply ||
+                    "AI se response nahi mila.";
+
+                if (!response.ok) {
+                    waitingMessage.textContent = data.reply ||
+                        "AI request failed. Please try again.";
+                }
+            } catch (error) {
+                waitingMessage.textContent =
+                    "Server se connect nahi ho pa raha. Flask server check karo.";
+            } finally {
+                chatSend.disabled = false;
+                chatInput.focus();
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        });
+    </script>
+</body>
+</html>
+```

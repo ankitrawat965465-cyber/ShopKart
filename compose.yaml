@@ -1,0 +1,48 @@
+services:
+  shopkart:
+    image: ghurka/shopkart:1.0
+    container_name: shopkart-container
+    ports:
+      - "8080:8080"
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_PORT: "3306"
+      MYSQL_DATABASE: shopkart
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: "root@1234"
+      OLLAMA_HOST: http://host.docker.internal:11434
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - shopkart-network
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+
+  mysql:
+    image: mysql:8.4
+    container_name: shopkart-mysql
+    environment:
+      MYSQL_DATABASE: shopkart
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: "root@1234"
+      MYSQL_ROOT_PASSWORD: "root@1234"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - shopkart-network
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uadmin -p'root@1234' --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 90s
+    restart: unless-stopped
+
+networks:
+  shopkart-network:
+    driver: bridge
+
+volumes:
+  mysql_data:

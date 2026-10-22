@@ -1,0 +1,8 @@
+venv/
+__pycache__/
+*.py[cod]
+app.py.broken-backup
+.env
+.git
+
+.env

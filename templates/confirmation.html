@@ -1,0 +1,29 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Order Confirmed | ShopKart</title>
+    <style>
+        body { font-family: Arial; background: #e9edf2; margin: 0; }
+        header { background: #131c2e; color: white; padding: 20px; font-size: 25px; }
+        main { max-width: 550px; margin: 40px auto; background: white; padding: 30px; border-radius: 12px; }
+        .success { color: #087f55; }
+        a { display: inline-block; padding: 12px 18px; background: #ffad42; color: #172033; text-decoration: none; border-radius: 6px; }
+    </style>
+</head>
+<body>
+    <header>ShopKart</header>
+    <main>
+        <h1 class="success">✓ Order Placed Successfully!</h1>
+        <p>Thank you, {{ order.name }}.</p>
+        <h3>Order ID: {{ order.order_id }}</h3>
+        <p>Product: {{ order.product.name }}</p>
+        <p>Amount: ₹{{ order.product.price }}</p>
+        <p>Delivery Address: {{ order.address }}</p>
+        <p>Order Time: {{ order.date }}</p>
+        <a href="/">Continue Shopping</a>
+    </main>
+</body>
+</html>

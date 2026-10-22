@@ -1,0 +1,130 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }} | ShopKart</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #e9edf2;
+            color: #202b3c;
+        }
+
+        header {
+            background: #131c2e;
+            color: white;
+            padding: 20px 5%;
+            font-size: 27px;
+            font-weight: bold;
+        }
+
+        header span {
+            color: #ffad42;
+        }
+
+        .product-card {
+            max-width: 950px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            box-shadow: 0 4px 14px rgba(20, 35, 55, 0.08);
+        }
+
+        .product-card img {
+            width: 100%;
+            max-width: 380px;
+            height: 330px;
+            object-fit: contain;
+        }
+
+        .details {
+            flex: 1;
+            min-width: 230px;
+        }
+
+        .price {
+            color: #087f55;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .stock {
+            color: #087f55;
+            font-weight: bold;
+        }
+
+        .button {
+            display: block;
+            text-align: center;
+            padding: 14px 20px;
+            margin-top: 14px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .buy-button {
+            background: #ffad42;
+            color: #172033;
+        }
+
+        .buy-button:hover {
+            background: #f69a20;
+        }
+
+        .back-button {
+            background: #26364d;
+            color: white;
+        }
+
+        @media (max-width: 600px) {
+            .product-card {
+                margin: 20px;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>Shop<span>Kart</span></header>
+
+    <main class="product-card">
+        <img src="{{ product.image }}" alt="{{ product.name }}">
+
+        <div class="details">
+            <h1>{{ product.name }}</h1>
+
+            <p class="price">₹{{ product.price }}</p>
+
+            <p class="stock">✓ Available for order</p>
+
+            <p>Quality products for your everyday needs.</p>
+
+            <p>Product ID: {{ product.id }}</p>
+
+            <a href="/order/{{ product.id }}" class="button buy-button">
+                🛒 Buy Now
+            </a>
+
+            <a href="/" class="button back-button">
+                ← Back to Products
+            </a>
+        </div>
+    </main>
+</body>
+</html>
+```

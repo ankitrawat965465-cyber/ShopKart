@@ -1,0 +1,23 @@
+cat > templates/product.html <<'HTML'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ product.name }} - ShopKart</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>ShopKart</h1>
+    </header>
+
+    <main class="card">
+        <h2>{{ product.name }}</h2>
+        <p class="price">Price: ₹{{ product.price }}</p>
+        <a href="{{ url_for('home') }}">Back to Products</a>
+    </main>
+</body>
+</html>
+HTML
