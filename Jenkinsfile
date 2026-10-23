@@ -18,7 +18,23 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t shopkart:jenkins .'
+                sh 'docker build -t ghurka/shopkart:jenkins .'
+            }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-creds',
+                    usernameVariable: 'DOCKERHUB_USER',
+                    passwordVariable: 'DOCKERHUB_TOKEN'
+                )]) {
+                    sh '''
+                        echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USER" --password-stdin
+                        docker push ghurka/shopkart:jenkins
+                        docker logout
+                    '''
+                }
             }
         }
     }
