@@ -43,11 +43,12 @@ pipeline {
             }
         }
 
-        stage('Deploy with Docker Compose') {
+         stage('Deploy with Docker Compose') {
             steps {
                 sh '''
-                    docker compose pull shopkart
-                    docker compose up -d --no-build shopkart
+                    cd /home/ankit/ShopKart
+                    docker compose -p shopkart pull shopkart
+                    docker compose -p shopkart up -d --no-build shopkart
                 '''
             }
         }
