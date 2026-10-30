@@ -6,7 +6,7 @@ metadata:
     {{- include "shopkart-chart.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
-  replicas: 2
+  replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
